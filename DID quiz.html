@@ -1,0 +1,164 @@
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <style>
+        body{
+            font-family: "Open Sans";
+            margin: 5px;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+            flex-direction: column;
+            background-color: #4040ff;
+        }
+        button, input, select{
+            border: 3px solid #f0f;
+            background-color: white;
+            padding: 10px;
+            margin: 1px;
+            border-radius: 20px;
+        }
+        button:hover, input:hover, select:hover{
+            background-color: #f0f;
+            color: white;
+        }
+        div{
+            border-radius: 20px;
+            background-color: white;
+            box-shadow: 7px 7px 15px #101010;
+        }
+    </style>
+<title>DID quiz</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+    <div><h1>DID quiz</h1>
+        <p><input type="text" id="pregunta" placeholder="Titulo de la pregunta"></p>
+        <ul>
+            <li><input type="text" id="opcion1" placeholder="Opción 1"></li>
+            <li><input type="text" id="opcion2" placeholder="Opción 2"></li>
+            <li><input type="text" id="opcion3" placeholder="Opción 3"></li>
+            <li><input type="text" id="opcion4" placeholder="Opción 4"></li>
+            <li><input type="text" id="respuesta" placeholder="Respuesta correcta"></li>
+        </ul>
+        <button onclick="añadir()">añadir</button><button onclick="descargar()">generar documento</button>
+        <button onclick="eliminarUltimo()">eliminar última pregunta</button>
+    </div>
+    <div id="contenedor"></div>
+    <script>
+        const contenedor = document.getElementById('contenedor');
+        function añadir() {
+            const pregunta = document.getElementById('pregunta').value;
+            const opcion1 = document.getElementById('opcion1').value;
+            const opcion2 = document.getElementById('opcion2').value;
+            const opcion3 = document.getElementById('opcion3').value;
+            const opcion4 = document.getElementById('opcion4').value;
+            const respuesta = document.getElementById('respuesta').value;
+            const opciones = [opcion1, opcion2, opcion3, opcion4, respuesta];
+            for (let i = opciones.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [opciones[i], opciones[j]] = [opciones[j], opciones[i]];
+            }
+            const opcionesHTML = opciones.map(opcion => `<option value="${opcion}">${opcion}</option>`).join('');
+            const divPregunta = document.createElement('div');
+            divPregunta.innerHTML = `
+                <h3>${pregunta}</h3>
+                    <select>
+                        ${opcionesHTML}
+                    </select>
+                    <button onclick="corregir(this, '${respuesta}')">Corregir</button>
+            `;
+            contenedor.appendChild(divPregunta);
+            document.getElementById('pregunta').value = '';
+            document.getElementById('opcion1').value = '';
+            document.getElementById('opcion2').value = '';
+            document.getElementById('opcion3').value = '';
+            document.getElementById('opcion4').value = '';
+            document.getElementById('respuesta').value = '';
+        }
+
+        function corregir(boton, respuestaCorrecta) {
+            const selectElement = boton.previousElementSibling;
+            const respuestaSeleccionada = selectElement.value;
+            if (respuestaSeleccionada === respuestaCorrecta) {
+                alert("¡Respuesta correcta!");
+            } else {
+                alert(`Respuesta incorrecta. La respuesta correcta es: ${respuestaCorrecta}`);
+            }
+        }
+        function eliminarUltimo() {
+            if (contenedor.lastChild) {
+                contenedor.removeChild(contenedor.lastChild);
+            }
+        }
+        function descargar() {
+            const preguntas = contenedor.innerHTML;
+            const css = `<style>
+                body{
+                    font-family: "Open Sans";
+                    margin: 5px;
+                    align-items: center;
+                    justify-content: center;
+                    display: flex;
+                    flex-direction: column;
+                    background-color: #4040ff;
+                }
+                button, input, select{
+                    border: 3px solid #f0f;
+                    background-color: white;
+                    padding: 10px;
+                    margin: 1px;
+                    border-radius: 20px;
+                }
+                button:hover, input:hover, select:hover{
+                    background-color: #f0f;
+                    color: white;
+                }
+                div{
+                    border-radius: 20px;
+                    background-color: white;
+                    box-shadow: 7px 7px 15px #101010;
+                }
+            </style>`
+            const script = `
+            <script>
+            function corregir(boton, respuestaCorrecta) {
+              const selectElement = boton.previousElementSibling;
+              const respuestaSeleccionada = selectElement.value;
+              alert(respuestaSeleccionada === respuestaCorrecta ? '¡Respuesta correcta!' : 'Respuesta incorrecta. La respuesta correcta es: ' + respuestaCorrecta);
+            }
+            <\/script>
+            `;
+            const estructuraHTML = `
+            <html>
+            <head>
+                ${css}
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+            <title>Quiz</title>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            </head>
+            <body>
+            ${preguntas}
+            ${script}
+            </body>
+            </html>
+            `
+            const blob = new Blob([estructuraHTML], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "Mi Quiz.html";
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+
+</body>
+</html>
