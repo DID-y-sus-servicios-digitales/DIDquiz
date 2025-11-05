@@ -46,13 +46,20 @@
         <br>
         <script>
             const link = document.createElement("a")
-                function load() {
-                
+            const selección = document.getElementById("archivo").value
+            function load() {
+                if (selección == "Guideen") {
+                    link.href = "Guía de uso de DID quiz en.pdf"
+                }
+                else if (selección == "Guiaes") {
+                    link.href = "Guía de uso de DID quiz es.pdf"
+                }
             }
         </script>
     </div>
 </body>
 </html>
+
 
 
 
