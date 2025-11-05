@@ -37,32 +37,23 @@
     <div>
         <h1>DIDquiz</h1>
         <h2>Descarga una copia del HTML del generador de quiz: DIDquiz</h2>
-        <button onclick="descargares()">Preparar y descargar (Español)</button><button onclick="descargaren()">Prepare and download (English)</button>
+        <select id="archivo">
+            <option value="Quizen">Quiz generator (EN)</option><option value="Guideen">Guide of service (EN)</option><option value="Quizes">Generador de quiz (ES)</option><option value="Guiaes">Guía de usuario (ES)</option>
+        </select>
         <details><summary>Advertencia</summary><li>este servicio tiene la capacidad de descargar otros archivos, ordena tu ordenador</li></details>
         <details><summary>¿Qué es un HTML?</summary><li>Un HTML es un formato de archivo para páginas web como esta que se ejecuta en el navegador, no necesitas ninguna app especial para abrirlo</li>
         <li>todos los archivos que se descarguen en este servicio van a ser .HTML</li></details>
         <br>
         <script>
-            function descargares(){
-                const link = document.createElement('a');
-                link.href = "DIDquiz_es.html"
-                link.download = "DIDquiz.html";
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
-            function descargaren(){
-                const link = document.createElement('a');
-                link.href = "DIDquiz_en.html"
-                link.download = "DIDquiz.html";
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
+            const link = document.createElement("a")
+                function load() {
+                
             }
         </script>
     </div>
 </body>
 </html>
+
 
 
 
