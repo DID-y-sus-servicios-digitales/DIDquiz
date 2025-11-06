@@ -68,41 +68,8 @@
             </ul>
         </details>
     </div>
-
-    <script>
-    (function () {
-        // Map option values to actual file paths/names on your server
-        const fileMap = {
-            "Quizen": "DIDquiz_en.pdf",
-            "Quizes": "DIDquiz_es.pdf",
-            "Guideen": "DIDquiz_guide_en.pdf",
-            "Guiaes": "DIDquiz_guide_es.pdf"
-        };
-
-        const selectEl = document.getElementById('archivo');
-        const btn = document.getElementById('downloadBtn');
-
-        btn.addEventListener('click', function () {
-            const selection = selectEl.value;
-            const fileName = fileMap[selection];
-
-            if (!fileName) {
-                alert('No hay un archivo asociado con la selección.');
-                return;
-            }
-
-            // Create an anchor, set href and download, trigger click, then remove it
-            const a = document.createElement('a');
-            a.href = encodeURI(fileName);
-            a.download = fileName;
-            a.style.display = 'none';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        });
-    })();
-    </script>
 </body>
 </html>
+
 
 
