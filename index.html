@@ -54,11 +54,22 @@
                 else if (selección == "Guiaes") {
                     link.href = "Guía de uso de DID quiz es.pdf"
                 }
+                else if (selección == "Quizen") {
+                    link.href = "DIDquiz_en.pdf"
+                }
+                else if (selección == "Quizes") {
+                    link.href = "DIDquiz_es.pdf"
+                }
             }
+           link.downoad = "DIDquiz.html";
+            body.appendChild(link);
+            link.click();
+            body.removeLastChild()
         </script>
     </div>
 </body>
 </html>
+
 
 
 
