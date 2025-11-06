@@ -1,81 +1,120 @@
-<html>
+<!doctype html>
+<html lang="es">
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
     <style>
         body{
-            font-family: "Open Sans";
+            font-family: "Open Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             margin: 5px;
+            display: flex;
             align-items: center;
             justify-content: center;
-            display: flex;
             flex-direction: column;
             background-color: #4040ff;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+        .card {
+            padding: 20px;
+            border-radius: 20px;
+            background-color: white;
+            box-shadow: 7px 7px 15px #101010;
+            max-width: 720px;
+            width: 100%;
         }
         button, input, select{
             border: 3px solid #f0f;
             background-color: white;
             padding: 10px;
-            margin: 1px;
+            margin: 6px 2px;
             border-radius: 20px;
+            cursor: pointer;
+            font-size: 1rem;
         }
         button:hover, input:hover, select:hover{
             background-color: #f0f;
             color: white;
         }
-        div{
-            border-radius: 20px;
-            background-color: white;
-            box-shadow: 7px 7px 15px #101010;
+        details > summary {
+            cursor: help;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+        ul {
+            margin: 6px 0 10px 1.2em;
         }
     </style>
-<title>descargar servicio</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Descargar servicio - DIDquiz</title>
 </head>
 <body>
-    <div>
+    <div class="card" role="main">
         <h1>DIDquiz</h1>
-        <h2>Descarga una copia del HTML del generador de quiz: DIDquiz</h2>
-        <select id="archivo">
-            <option value="Quizen">Quiz generator (EN)</option><option value="Guideen">Guide of service (EN)</option><option value="Quizes">Generador de quiz (ES)</option><option value="Guiaes">Guía de usuario (ES)</option>
+        <h2>Descarga una copia del HTML o PDF del generador de quiz</h2>
+
+        <label for="archivo">file:</label>
+        <select id="archivo" name="archivo" aria-label="Seleccionar archivo a descargar">
+            <option value="Quizen">Quiz generator (EN)</option>
+            <option value="Guideen">Guide of service (EN)</option>
+            <option value="Quizes">Generador de quiz (ES)</option>
+            <option value="Guiaes">Guía de servicio (ES)</option>
         </select>
-        <details><summary>Advertencia</summary><li>este servicio tiene la capacidad de descargar otros archivos, ordena tu ordenador</li></details>
-        <details><summary>¿Qué es un HTML?</summary><li>Un HTML es un formato de archivo para páginas web como esta que se ejecuta en el navegador, no necesitas ninguna app especial para abrirlo</li>
-        <li>todos los archivos que se descarguen en este servicio van a ser .HTML</li></details>
-        <br>
-        <script>
-            const link = document.createElement("a")
-            const selección = document.getElementById("archivo").value
-            function load() {
-                if (selección == "Guideen") {
-                    link.href = "Guía de uso de DID quiz en.pdf"
-                }
-                else if (selección == "Guiaes") {
-                    link.href = "Guía de uso de DID quiz es.pdf"
-                }
-                else if (selección == "Quizen") {
-                    link.href = "DIDquiz_en.pdf"
-                }
-                else if (selección == "Quizes") {
-                    link.href = "DIDquiz_es.pdf"
-                }
-            }
-           link.downoad = "DIDquiz.html";
-            body.appendChild(link);
-            link.click();
-            body.removeLastChild()
-        </script>
+
+        <div>
+            <button id="downloadBtn">Descargar</button>
+        </div>
+
+        <details>
+            <summary>Advertencia</summary>
+            <ul>
+                <li>Este servicio tiene la capacidad de descargar otros archivos; organiza tu ordenador antes de usarlo.</li>
+            </ul>
+        </details>
+
+        <details>
+            <summary>¿Qué es un HTML?</summary>
+            <ul>
+                <li>Un HTML es un formato de archivo para páginas web que se ejecuta en el navegador. No necesitas ninguna app especial para abrirlo.</li>
+                <li>Todos los archivos que se descarguen desde este servicio serán HTML o PDF según la opción seleccionada.</li>
+            </ul>
+        </details>
     </div>
+
+    <script>
+    (function () {
+        // Map option values to actual file paths/names on your server
+        const fileMap = {
+            "Quizen": "DIDquiz_en.pdf",
+            "Quizes": "DIDquiz_es.pdf",
+            "Guideen": "DIDquiz_guide_en.pdf",
+            "Guiaes": "DIDquiz_guide_es.pdf"
+        };
+
+        const selectEl = document.getElementById('archivo');
+        const btn = document.getElementById('downloadBtn');
+
+        btn.addEventListener('click', function () {
+            const selection = selectEl.value;
+            const fileName = fileMap[selection];
+
+            if (!fileName) {
+                alert('No hay un archivo asociado con la selección.');
+                return;
+            }
+
+            // Create an anchor, set href and download, trigger click, then remove it
+            const a = document.createElement('a');
+            a.href = encodeURI(fileName);
+            a.download = fileName;
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        });
+    })();
+    </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
